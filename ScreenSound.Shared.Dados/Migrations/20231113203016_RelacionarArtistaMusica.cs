@@ -27,6 +27,17 @@ namespace ScreenSound.Migrations
                 column: "ArtistaId",
                 principalTable: "Artistas",
                 principalColumn: "Id");
+
+            // Associando as músicas ao artista Djavan
+            migrationBuilder.Sql(@"
+                UPDATE Musicas
+                SET ArtistaId = (
+                    SELECT Id
+                    FROM Artistas
+                    WHERE Nome = 'Djavan'
+                )
+                WHERE Nome IN ('Oceano', 'Flor de Lis', 'Samurai', 'Se')
+                ");
         }
 
         /// <inheritdoc />
