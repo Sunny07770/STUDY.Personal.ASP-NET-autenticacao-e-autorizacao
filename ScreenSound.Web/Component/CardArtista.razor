@@ -23,10 +23,22 @@
     public string? Imagem { get; set; }
 
     protected override void OnInitialized()
-    {
-        Imagem = Artista!.FotoPerfil!.Contains("Foto") ? $"https://localhost:7089/{Artista!.FotoPerfil}" : "images/cardArtista.png";
+{
+    var foto = Artista?.FotoPerfil;
 
+    if (string.IsNullOrWhiteSpace(foto))
+    {
+        Imagem = "images/cardArtista.png";
     }
+    else if (foto.StartsWith("http", StringComparison.OrdinalIgnoreCase))
+    {
+        Imagem = foto;
+    }
+    else
+    {
+        Imagem = $"https://localhost:7089/{foto.TrimStart('/')}";
+    }
+}
 
     private string LimitaCaracteres(string texto, int tamanhoMaximo)
     {
