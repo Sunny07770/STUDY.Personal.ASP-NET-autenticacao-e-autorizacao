@@ -1,0 +1,13 @@
+﻿@page "/Logout"
+@inject AuthAPI AuthAPI
+
+<h3>Logout</h3>
+
+@code {
+	protected override async Task OnInitializedAsync()
+	{
+		if (await AuthAPI.VerificaAutenticado())
+			await AuthAPI.LogoutAsync();
+		 await base.OnInitializedAsync();
+	}
+}

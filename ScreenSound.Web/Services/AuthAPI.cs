@@ -8,6 +8,7 @@ namespace ScreenSound.Web.Services
 {
     public class AuthAPI : AuthenticationStateProvider
     {
+        private bool autenticado = false;
         private readonly HttpClient _httpClient;
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
@@ -27,6 +28,8 @@ namespace ScreenSound.Web.Services
 
                 var identity = new ClaimsIdentity(dados, "Cookies");
                 pessoa = new ClaimsPrincipal(identity);
+
+                autenticado = true;
             }
 
             return new AuthenticationState(pessoa);
@@ -55,6 +58,18 @@ namespace ScreenSound.Web.Services
             {
                 return new AuthResponse { Sucesso = false, Erros = ["login/senha inválidos"] };
             }
+        }
+
+        public async Task LogoutAsync()
+        {
+            await _httpClient.PostAsync("auth/logout", null);
+            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+        }
+
+        public async Task<bool> VerificaAutenticado()
+        {
+            await GetAuthenticationStateAsync();
+            return autenticado;
         }
     }
 }
