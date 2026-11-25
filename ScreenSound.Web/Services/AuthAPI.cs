@@ -12,6 +12,8 @@ namespace ScreenSound.Web.Services
         private readonly HttpClient _httpClient;
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
+            autenticado = false;
+
             var pessoa = new ClaimsPrincipal();
 
             var response = await _httpClient.GetAsync("auth/manage/info");
