@@ -291,6 +291,22 @@ namespace ScreenSound.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("ScreenSound.Shared.Modelos.Modelos.AvaliacaoArtista", b =>
+                {
+                    b.Property<int>("ArtistaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PessoaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Nota")
+                        .HasColumnType("int");
+
+                    b.HasKey("ArtistaId", "PessoaId");
+
+                    b.ToTable("AvaliacaoArtistas");
+                });
+
             modelBuilder.Entity("ScreenSound.Shared.Modelos.Modelos.Genero", b =>
                 {
                     b.Property<int>("Id")
@@ -385,8 +401,21 @@ namespace ScreenSound.Migrations
                     b.Navigation("Artista");
                 });
 
+            modelBuilder.Entity("ScreenSound.Shared.Modelos.Modelos.AvaliacaoArtista", b =>
+                {
+                    b.HasOne("ScreenSound.Modelos.Artista", "Artista")
+                        .WithMany("Avaliacoes")
+                        .HasForeignKey("ArtistaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Artista");
+                });
+
             modelBuilder.Entity("ScreenSound.Modelos.Artista", b =>
                 {
+                    b.Navigation("Avaliacoes");
+
                     b.Navigation("Musicas");
                 });
 #pragma warning restore 612, 618
